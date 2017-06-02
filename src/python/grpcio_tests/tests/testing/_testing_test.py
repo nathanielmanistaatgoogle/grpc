@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright 2015, Google Inc.
+# Copyright 2017, Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,52 +27,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-set -ex
+import unittest
+from concurrent import futures
 
-# change to root directory
-cd "$(dirname "${0}")/../.."
+import grpc_testing
 
-DIRS=(
-    'src/python'
-)
-EXCLUSIONS=(
-    'grpcio/grpc_*.py'
-    'grpcio_health_checking/grpc_*.py'
-    'grpcio_reflection/grpc_*.py'
-    'grpcio_testing/grpc_*.py'
-    'grpcio_tests/grpc_*.py'
-)
+from tests.testing.proto import services_pb2
 
-VIRTUALENV=yapf_virtual_environment
 
-virtualenv $VIRTUALENV
-PYTHON=$(realpath "${VIRTUALENV}/bin/python")
-$PYTHON -m pip install --upgrade pip
-$PYTHON -m pip install --upgrade futures
-$PYTHON -m pip install yapf==0.16.0
+class gRPCTestingTest(unittest.TestCase):
 
-yapf() {
-    local exclusion exclusion_args=()
-    for exclusion in "${EXCLUSIONS[@]}"; do
-        exclusion_args+=( "--exclude" "$1/${exclusion}" )
-    done
-    $PYTHON -m yapf -i -r --style=setup.cfg -p "${exclusion_args[@]}" "${1}"
-}
+    def testUpDown(self):
+        self.assertIsNotNone(services_pb2.DESCRIPTOR)
 
-if [[ -z "${TEST}" ]]; then
-    for dir in "${DIRS[@]}"; do
-	yapf "${dir}"
-    done
-else
-    ok=yes
-    for dir in "${DIRS[@]}"; do
-	tempdir=$(mktemp -d)
-	cp -RT "${dir}" "${tempdir}"
-	yapf "${tempdir}"
-	diff -ru "${dir}" "${tempdir}" || ok=no
-	rm -rf "${tempdir}"
-    done
-    if [[ ${ok} == no ]]; then
-	false
-    fi
-fi
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

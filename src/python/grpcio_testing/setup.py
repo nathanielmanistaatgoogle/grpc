@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright 2015, Google Inc.
+# Copyright 2017, Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -27,53 +26,34 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""Setup module for gRPC Python's testing package."""
 
-set -ex
+import os
+import sys
 
-# change to root directory
-cd "$(dirname "${0}")/../.."
+import setuptools
 
-DIRS=(
-    'src/python'
-)
-EXCLUSIONS=(
-    'grpcio/grpc_*.py'
-    'grpcio_health_checking/grpc_*.py'
-    'grpcio_reflection/grpc_*.py'
-    'grpcio_testing/grpc_*.py'
-    'grpcio_tests/grpc_*.py'
-)
+# Ensure we're in the proper directory whether or not we're being used by pip.
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-VIRTUALENV=yapf_virtual_environment
+# Break import style to ensure that we can find same-directory modules.
+import grpc_version
 
-virtualenv $VIRTUALENV
-PYTHON=$(realpath "${VIRTUALENV}/bin/python")
-$PYTHON -m pip install --upgrade pip
-$PYTHON -m pip install --upgrade futures
-$PYTHON -m pip install yapf==0.16.0
-
-yapf() {
-    local exclusion exclusion_args=()
-    for exclusion in "${EXCLUSIONS[@]}"; do
-        exclusion_args+=( "--exclude" "$1/${exclusion}" )
-    done
-    $PYTHON -m yapf -i -r --style=setup.cfg -p "${exclusion_args[@]}" "${1}"
+PACKAGE_DIRECTORIES = {
+    '': '.',
 }
 
-if [[ -z "${TEST}" ]]; then
-    for dir in "${DIRS[@]}"; do
-	yapf "${dir}"
-    done
-else
-    ok=yes
-    for dir in "${DIRS[@]}"; do
-	tempdir=$(mktemp -d)
-	cp -RT "${dir}" "${tempdir}"
-	yapf "${tempdir}"
-	diff -ru "${dir}" "${tempdir}" || ok=no
-	rm -rf "${tempdir}"
-    done
-    if [[ ${ok} == no ]]; then
-	false
-    fi
-fi
+INSTALL_REQUIRES = ('protobuf>=3.3.0',
+                    'grpcio>={version}'.format(version=grpc_version.VERSION),)
+
+setuptools.setup(
+    name='grpcio-testing',
+    version=grpc_version.VERSION,
+    license='3-clause BSD',
+    description='Testing utilities for gRPC Python',
+    author='The gRPC Authors',
+    author_email='grpc-io@googlegroups.com',
+    url='http://www.grpc.io',
+    package_dir=PACKAGE_DIRECTORIES,
+    packages=setuptools.find_packages('.'),
+    install_requires=INSTALL_REQUIRES)
