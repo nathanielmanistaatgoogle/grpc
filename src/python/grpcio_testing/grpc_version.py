@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright 2015, Google Inc.
+# Copyright 2016, Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,52 +27,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-set -ex
+# AUTO-GENERATED FROM `$REPO_ROOT/templates/src/python/grpcio_reflection/grpc_version.py.template`!!!
 
-# change to root directory
-cd "$(dirname "${0}")/../.."
-
-DIRS=(
-    'src/python'
-)
-EXCLUSIONS=(
-    'grpcio/grpc_*.py'
-    'grpcio_health_checking/grpc_*.py'
-    'grpcio_reflection/grpc_*.py'
-    'grpcio_testing/grpc_*.py'
-    'grpcio_tests/grpc_*.py'
-)
-
-VIRTUALENV=yapf_virtual_environment
-
-virtualenv $VIRTUALENV
-PYTHON=$(realpath "${VIRTUALENV}/bin/python")
-$PYTHON -m pip install --upgrade pip
-$PYTHON -m pip install --upgrade futures
-$PYTHON -m pip install yapf==0.16.0
-
-yapf() {
-    local exclusion exclusion_args=()
-    for exclusion in "${EXCLUSIONS[@]}"; do
-        exclusion_args+=( "--exclude" "$1/${exclusion}" )
-    done
-    $PYTHON -m yapf -i -r --style=setup.cfg -p "${exclusion_args[@]}" "${1}"
-}
-
-if [[ -z "${TEST}" ]]; then
-    for dir in "${DIRS[@]}"; do
-	yapf "${dir}"
-    done
-else
-    ok=yes
-    for dir in "${DIRS[@]}"; do
-	tempdir=$(mktemp -d)
-	cp -RT "${dir}" "${tempdir}"
-	yapf "${tempdir}"
-	diff -ru "${dir}" "${tempdir}" || ok=no
-	rm -rf "${tempdir}"
-    done
-    if [[ ${ok} == no ]]; then
-	false
-    fi
-fi
+VERSION='1.4.0.dev0'

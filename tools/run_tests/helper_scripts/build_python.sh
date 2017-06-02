@@ -186,6 +186,9 @@ $VENV_PYTHON $ROOT/src/python/grpcio_reflection/setup.py preprocess
 $VENV_PYTHON $ROOT/src/python/grpcio_reflection/setup.py build_package_protos
 pip_install_dir $ROOT/src/python/grpcio_reflection
 
+# Install testing
+pip_install_dir $ROOT/src/python/grpcio_testing
+
 # Build/install tests
 $VENV_PYTHON -m pip install coverage oauth2client
 $VENV_PYTHON $ROOT/src/python/grpcio_tests/setup.py preprocess

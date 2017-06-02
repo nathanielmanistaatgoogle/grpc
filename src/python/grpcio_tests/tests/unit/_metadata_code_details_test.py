@@ -33,6 +33,7 @@ import unittest
 
 import grpc
 from grpc.framework.foundation import logging_pool
+import grpc_testing
 
 from tests.unit import test_common
 from tests.unit.framework.common import test_constants
@@ -205,6 +206,9 @@ class MetadataCodeDetailsTest(unittest.TestCase):
             '/'.join(('', _SERVICE, _STREAM_STREAM,)),
             request_serializer=_REQUEST_SERIALIZER,
             response_deserializer=_RESPONSE_DESERIALIZER,)
+
+    def test_grpc_testing(self):
+        self.assertIsNone(grpc_testing.channel_fixture_from_descriptors(None))
 
     def testSuccessfulUnaryUnary(self):
         self._servicer.set_details(_DETAILS)

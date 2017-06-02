@@ -33,7 +33,7 @@ set -ex
 # change to root directory
 cd $(dirname $0)/../..
 
-DIRS=src/python/grpcio/grpc
+DIRS=src/python/grpcio/grpc,src/python/grpcio_testing/grpc_testing
 
 VIRTUALENV=python_pylint_venv
 
