@@ -20,8 +20,9 @@ cd "$(dirname "$0")/../.."
 
 DIRS=(
   'src/python/grpcio/grpc'
-  'src/python/grpcio_reflection/grpc_reflection'
   'src/python/grpcio_health_checking/grpc_health'
+  'src/python/grpcio_reflection/grpc_reflection'
+  'src/python/grpcio_testing/grpc_testing'
 )
 
 VIRTUALENV=python_pylint_venv
