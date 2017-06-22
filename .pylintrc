@@ -7,7 +7,7 @@ dummy-variables-rgx=^ignored_|^unused_
 # NOTE(nathaniel): Not particularly attached to this value; it just seems to
 # be what works for us at the moment (excepting the dead-code-walking Beta
 # API).
-max-args=6
+max-args=7
 
 [MISCELLANEOUS]
 # NOTE(nathaniel): We are big fans of "TODO(<issue link>): " and
@@ -37,4 +37,4 @@ notes=FIXME,XXX
 #TODO: Enable useless-else-on-loop
 #TODO: Enable too-many-nested-blocks
 
-disable=missing-docstring,too-few-public-methods,no-init,duplicate-code,invalid-name,locally-disabled,protected-access,no-name-in-module,wrong-import-order,cyclic-import,too-many-instance-attributes,too-many-lines,redefined-variable-type,next-method-called,import-error,useless-else-on-loop,too-many-nested-blocks
+disable=missing-docstring,too-few-public-methods,no-init,duplicate-code,invalid-name,locally-disabled,protected-access,no-name-in-module,wrong-import-order,cyclic-import,too-many-instance-attributes,too-many-lines,redefined-variable-type,next-method-called,import-error,useless-else-on-loop,too-many-nested-blocks,misplaced-comparison-constant,locally-enabled,too-many-return-statements
