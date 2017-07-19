@@ -21,8 +21,8 @@ import logging
 import six
 
 
-def _fuss(metadata):
-    return metadata + (
+def _fuss(tuplified_metadata):
+    return tuplified_metadata + (
         (
             'grpc.metadata_added_by_runtime',
             'gRPC is allowed to add metadata in transmission and does so.',
@@ -33,7 +33,10 @@ FUSSED_EMPTY_METADATA = _fuss(())
 
 
 def fuss_with_metadata(metadata):
-    return _fuss(() if metadata is None else tuple(metadata))
+    if metadata is None:
+        return FUSSED_EMPTY_METADATA
+    else:
+        return _fuss(tuple(metadata))
 
 
 class ChannelRpcRead(

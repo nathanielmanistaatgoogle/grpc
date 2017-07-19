@@ -29,13 +29,12 @@ class FirstServiceServicerTest(unittest.TestCase):
     def setUp(self):
         self._real_time = grpc_testing.real_time()
         self._fake_time = grpc_testing.fake_time(time.time())
-        self._real_time_server = (
-            grpc_testing.server_from_map({
-                _server_application.FirstServiceServicer():
-                _application_testing_common.FIRST_SERVICE,
-            }, self._real_time))
-        self._fake_time_server = (
-            grpc_testing.server_fixture_from_descriptions({
+        self._real_time_server = (grpc_testing.server_from_map({
+            _server_application.FirstServiceServicer():
+            _application_testing_common.FIRST_SERVICE,
+        }, self._real_time))
+        self._fake_time_server = (grpc_testing.server_fixture_from_descriptions(
+            {
                 _server_application.FirstServiceServicer():
                 _application_testing_common.FIRST_SERVICE,
             }, self._fake_time))
@@ -83,12 +82,8 @@ class FirstServiceServicerTest(unittest.TestCase):
         ]
         rpc.send_request(_application_common.STREAM_STREAM_REQUEST)
         rpc.send_request(_application_common.STREAM_STREAM_REQUEST)
-        responses.extend((
-            rpc.take_response(),
-            rpc.take_response(),
-            rpc.take_response(),
-            rpc.take_response(),
-        ))
+        responses.extend((rpc.take_response(), rpc.take_response(),
+                          rpc.take_response(), rpc.take_response(),))
         rpc.no_more_requests()
         trailing_metadata, code, details = rpc.terminate()
 

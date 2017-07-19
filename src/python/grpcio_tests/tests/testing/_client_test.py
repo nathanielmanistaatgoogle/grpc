@@ -23,30 +23,32 @@ import grpc_testing
 from tests.testing import _application_common
 from tests.testing import _application_testing_common
 from tests.testing import _client_application
+from tests.testing.proto import services_pb2
 
 
 class ClientTest(unittest.TestCase):
 
     def setUp(self):
-        self._application_thread_pool = logging_pool.pool(1)
+        # In this test the client-side application under test executes in
+        # a separate thread while we retain use of the test thread to "play
+        # server".
+        self._client_execution_thread_pool = logging_pool.pool(1)
+
         self._fake_time = grpc_testing.fake_time(time.time())
         self._real_time = grpc_testing.real_time()
-        self._fake_time_fixture = (
-            grpc_testing.channel_fixture_from_descriptions(
-                iter(_application_testing_common.DESCRIPTIONS),
-                self._fake_time))
-        self._real_time_fixture = (
-            grpc_testing.channel_fixture_from_descriptions(
-                _application_testing_common.DESCRIPTIONS, self._real_time))
+        self._fake_time_channel = grpc_testing.channel(
+            services_pb2.DESCRIPTOR.services_by_name.values(), self._fake_time)
+        self._real_time_channel = grpc_testing.channel(
+            services_pb2.DESCRIPTOR.services_by_name.values(), self._real_time)
 
     def tearDown(self):
-        self._application_thread_pool.shutdown(wait=True)
+        self._client_execution_thread_pool.shutdown(wait=True)
 
     def test_successful_unary_unary(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.UNARY_UNARY,
-            self._real_time_fixture.channel())
-        rpc = self._real_time_fixture.take_rpc_by_service_and_method_names(
+            self._real_time_channel.channel())
+        rpc = self._real_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.UNARY_UNARY_METHOD_NAME)
         rpc.invocation_metadata()
@@ -63,10 +65,10 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_successful_unary_stream(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.UNARY_STREAM,
-            self._fake_time_fixture.channel())
-        rpc = self._fake_time_fixture.take_rpc_by_service_and_method_names(
+            self._fake_time_channel.channel())
+        rpc = self._fake_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.UNARY_STREAM_METHOD_NAME)
         request = rpc.take_request_as_message()
@@ -80,10 +82,10 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_successful_stream_unary(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.STREAM_UNARY,
-            self._real_time_fixture.channel())
-        rpc = self._real_time_fixture.take_rpc_by_service_and_method_names(
+            self._real_time_channel.channel())
+        rpc = self._real_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.STREAM_UNARY_METHOD_NAME)
         rpc.initial_metadata(())
@@ -105,10 +107,10 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_successful_stream_stream(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.STREAM_STREAM,
-            self._fake_time_fixture.channel())
-        rpc = self._fake_time_fixture.take_rpc_by_service_and_method_names(
+            self._fake_time_channel.channel())
+        rpc = self._fake_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.STREAM_STREAM_METHOD_NAME)
         observed_invocation_metadata = rpc.invocation_metadata()
@@ -130,14 +132,14 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_concurrent_stream_stream(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run,
             _client_application.Scenario.CONCURRENT_STREAM_STREAM,
-            self._real_time_fixture.channel())
+            self._real_time_channel.channel())
         rpcs = []
         for _ in range(test_constants.RPC_CONCURRENCY):
             rpcs.append(
-                self._real_time_fixture.take_rpc_by_service_and_method_names(
+                self._real_time_channel.take_rpc_by_service_and_method_names(
                     _application_common.SERVICE_NAME,
                     _application_common.STREAM_STREAM_METHOD_NAME))
         for rpc in rpcs:
@@ -167,11 +169,11 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_cancelled_unary_unary(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run,
             _client_application.Scenario.CANCEL_UNARY_UNARY,
-            self._fake_time_fixture.channel())
-        rpc = self._fake_time_fixture.take_rpc_by_service_and_method_names(
+            self._fake_time_channel.channel())
+        rpc = self._fake_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.UNARY_UNARY_METHOD_NAME)
         request = rpc.take_request_as_message()
@@ -185,12 +187,12 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.SATISFACTORY)
 
     def test_status_stream_unary(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run,
             _client_application.Scenario.CONCURRENT_STREAM_UNARY,
-            self._fake_time_fixture.channel())
+            self._fake_time_channel.channel())
         rpcs = tuple(
-            self._fake_time_fixture.take_rpc_by_service_and_method_names(
+            self._fake_time_channel.take_rpc_by_service_and_method_names(
                 _application_common.SERVICE_NAME,
                 _application_common.STREAM_UNARY_METHOD_NAME)
             for _ in range(test_constants.THREAD_CONCURRENCY))
@@ -215,10 +217,10 @@ class ClientTest(unittest.TestCase):
         code = grpc.StatusCode.DEADLINE_EXCEEDED
         details = 'test deadline exceeded!'
 
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.STREAM_STREAM,
-            self._real_time_fixture.channel())
-        rpc = self._real_time_fixture.take_rpc_by_service_and_method_names(
+            self._real_time_channel.channel())
+        rpc = self._real_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.STREAM_STREAM_METHOD_NAME)
         observed_invocation_metadata = rpc.invocation_metadata()
@@ -242,10 +244,10 @@ class ClientTest(unittest.TestCase):
         self.assertEqual(application_return_value.details, details)
 
     def test_misbehaving_server_unary_unary(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.UNARY_UNARY,
-            self._fake_time_fixture.channel())
-        rpc = self._fake_time_fixture.take_rpc_by_service_and_method_names(
+            self._fake_time_channel.channel())
+        rpc = self._fake_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.UNARY_UNARY_METHOD_NAME)
         request = rpc.take_request_as_message()
@@ -261,10 +263,10 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.UNSATISFACTORY)
 
     def test_misbehaving_server_stream_stream(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.STREAM_STREAM,
-            self._real_time_fixture.channel())
-        rpc = self._real_time_fixture.take_rpc_by_service_and_method_names(
+            self._real_time_channel.channel())
+        rpc = self._real_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.STREAM_STREAM_METHOD_NAME)
         observed_invocation_metadata = rpc.invocation_metadata()
@@ -286,11 +288,11 @@ class ClientTest(unittest.TestCase):
                       _client_application.Outcome.Kind.UNSATISFACTORY)
 
     def test_infinite_request_stream_real_time(self):
-        application_future = self._application_thread_pool.submit(
+        application_future = self._client_execution_thread_pool.submit(
             _client_application.run,
             _client_application.Scenario.INFINITE_REQUEST_STREAM,
-            self._real_time_fixture.channel())
-        rpc = self._real_time_fixture.take_rpc_by_service_and_method_names(
+            self._real_time_channel.channel())
+        rpc = self._real_time_channel.take_rpc_by_service_and_method_names(
             _application_common.SERVICE_NAME,
             _application_common.STREAM_UNARY_METHOD_NAME)
         rpc.initial_metadata(())
