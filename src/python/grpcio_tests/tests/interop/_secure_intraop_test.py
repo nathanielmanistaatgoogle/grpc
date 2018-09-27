@@ -41,10 +41,9 @@ class SecureIntraopTest(_intraop_test_case.IntraopTestCase, unittest.TestCase):
             grpc.secure_channel(
                 'localhost:{}'.format(port),
                 grpc.ssl_channel_credentials(
-                    resources.test_root_certificates()), ((
-                        'grpc.ssl_target_name_override',
-                        _SERVER_HOST_OVERRIDE,
-                    ),)))
+                    resources.test_root_certificates()),
+                (('grpc.ssl_target_name_override', _SERVER_HOST_OVERRIDE,
+                 ),)))
 
     def tearDown(self):
         self.server.stop(None)

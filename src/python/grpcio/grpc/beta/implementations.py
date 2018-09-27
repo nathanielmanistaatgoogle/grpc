@@ -196,8 +196,7 @@ def generic_stub(channel, options=None):
     effective_options = _EMPTY_STUB_OPTIONS if options is None else options
     return _client_adaptations.generic_stub(
         channel._channel,  # pylint: disable=protected-access
-        effective_options.host,
-        effective_options.metadata_transformer,
+        effective_options.host, effective_options.metadata_transformer,
         effective_options.request_serializers,
         effective_options.response_deserializers)
 
@@ -219,9 +218,7 @@ def dynamic_stub(channel, service, cardinalities, options=None):
     effective_options = _EMPTY_STUB_OPTIONS if options is None else options
     return _client_adaptations.dynamic_stub(
         channel._channel,  # pylint: disable=protected-access
-        service,
-        cardinalities,
-        effective_options.host,
+        service, cardinalities, effective_options.host,
         effective_options.metadata_transformer,
         effective_options.request_serializers,
         effective_options.response_deserializers)

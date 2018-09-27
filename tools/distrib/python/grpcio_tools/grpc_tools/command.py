@@ -35,8 +35,7 @@ def build_package_protos(package_root):
 
     for proto_file in proto_files:
         command = [
-            'grpc_tools.protoc',
-            '--proto_path={}'.format(inclusion_root),
+            'grpc_tools.protoc', '--proto_path={}'.format(inclusion_root),
             '--proto_path={}'.format(well_known_protos_include),
             '--python_out={}'.format(inclusion_root),
             '--grpc_python_out={}'.format(inclusion_root),

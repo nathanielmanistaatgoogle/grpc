@@ -80,8 +80,7 @@ subprocess_arguments_list = [
     {
         'args': [VIRTUALENV_PYTHON_PATH, SETUP_PATH, 'build'],
         'env': environment
-    },
-    {
+    }, {
         'args': [VIRTUALENV_PYTHON_PATH, SETUP_PATH, 'doc'],
         'env': environment
     },

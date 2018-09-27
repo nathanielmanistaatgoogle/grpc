@@ -87,8 +87,7 @@ _EXEMPT = frozenset((
     'src/core/tsi/alts/handshaker/handshaker.pb.c',
     'src/core/tsi/alts/handshaker/transport_security_common.pb.h',
     'src/core/tsi/alts/handshaker/transport_security_common.pb.c',
-    'src/cpp/server/health/health.pb.h',
-    'src/cpp/server/health/health.pb.c',
+    'src/cpp/server/health/health.pb.h', 'src/cpp/server/health/health.pb.c',
 
     # An older file originally from outside gRPC.
     'src/php/tests/bootstrap.php',

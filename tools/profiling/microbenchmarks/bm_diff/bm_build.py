@@ -70,10 +70,7 @@ def build(name, benchmarks, jobs, counters):
         subprocess.check_call(_make_cmd('opt', benchmarks, jobs))
         if counters:
             subprocess.check_call(_make_cmd('counters', benchmarks, jobs))
-    os.rename(
-        'bins',
-        'bm_diff_%s' % name,
-    )
+    os.rename('bins', 'bm_diff_%s' % name,)
 
 
 if __name__ == '__main__':

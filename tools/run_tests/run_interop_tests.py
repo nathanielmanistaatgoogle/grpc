@@ -838,8 +838,7 @@ def cloud_to_cloud_jobspec(language,
                            manual_cmd_log=None):
     """Creates jobspec for cloud-to-cloud interop test"""
     interop_only_options = [
-        '--server_host_override=foo.test.google.fr',
-        '--use_test_ca=true',
+        '--server_host_override=foo.test.google.fr', '--use_test_ca=true',
     ]
     if transport_security == 'tls':
         interop_only_options += ['--use_tls=true']
@@ -952,11 +951,9 @@ def server_jobspec(language,
         # command line.
         docker_args += [
             '--health-cmd=python test/http2_test/http2_server_health_check.py '
-            '--server_host=%s --server_port=%d' % ('localhost',
-                                                   _DEFAULT_SERVER_PORT),
-            '--health-interval=1s',
-            '--health-retries=5',
-            '--health-timeout=10s',
+            '--server_host=%s --server_port=%d' %
+            ('localhost', _DEFAULT_SERVER_PORT), '--health-interval=1s',
+            '--health-retries=5', '--health-timeout=10s',
         ]
 
     else:

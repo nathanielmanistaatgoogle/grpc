@@ -29,10 +29,8 @@ _EMPTY_FLAGS = 0
 
 
 def _metadata_plugin(context, callback):
-    callback(((
-        _CALL_CREDENTIALS_METADATA_KEY,
-        _CALL_CREDENTIALS_METADATA_VALUE,
-    ),), cygrpc.StatusCode.ok, b'')
+    callback(((_CALL_CREDENTIALS_METADATA_KEY, _CALL_CREDENTIALS_METADATA_VALUE,
+              ),), cygrpc.StatusCode.ok, b'')
 
 
 class TypeSmokeTest(unittest.TestCase):
@@ -42,12 +40,7 @@ class TypeSmokeTest(unittest.TestCase):
         del completion_queue
 
     def testServerUpDown(self):
-        server = cygrpc.Server(set([
-            (
-                b'grpc.so_reuseport',
-                0,
-            ),
-        ]))
+        server = cygrpc.Server(set([(b'grpc.so_reuseport', 0,),]))
         del server
 
     def testChannelUpDown(self):
@@ -59,12 +52,7 @@ class TypeSmokeTest(unittest.TestCase):
                                              b'test plugin name!')
 
     def testServerStartNoExplicitShutdown(self):
-        server = cygrpc.Server([
-            (
-                b'grpc.so_reuseport',
-                0,
-            ),
-        ])
+        server = cygrpc.Server([(b'grpc.so_reuseport', 0,),])
         completion_queue = cygrpc.CompletionQueue()
         server.register_completion_queue(completion_queue)
         port = server.add_http2_port(b'[::]:0')
@@ -74,12 +62,7 @@ class TypeSmokeTest(unittest.TestCase):
 
     def testServerStartShutdown(self):
         completion_queue = cygrpc.CompletionQueue()
-        server = cygrpc.Server([
-            (
-                b'grpc.so_reuseport',
-                0,
-            ),
-        ])
+        server = cygrpc.Server([(b'grpc.so_reuseport', 0,),])
         server.add_http2_port(b'[::]:0')
         server.register_completion_queue(completion_queue)
         server.start()
@@ -97,12 +80,7 @@ class ServerClientMixin(object):
 
     def setUpMixin(self, server_credentials, client_credentials, host_override):
         self.server_completion_queue = cygrpc.CompletionQueue()
-        self.server = cygrpc.Server([
-            (
-                b'grpc.so_reuseport',
-                0,
-            ),
-        ])
+        self.server = cygrpc.Server([(b'grpc.so_reuseport', 0,),])
         self.server.register_completion_queue(self.server_completion_queue)
         if server_credentials:
             self.port = self.server.add_http2_port(b'[::]:0',
@@ -113,8 +91,7 @@ class ServerClientMixin(object):
         self.client_completion_queue = cygrpc.CompletionQueue()
         if client_credentials:
             client_channel_arguments = ((
-                cygrpc.ChannelArgKey.ssl_target_name_override,
-                host_override,
+                cygrpc.ChannelArgKey.ssl_target_name_override, host_override,
             ),)
             self.client_channel = cygrpc.Channel(
                 'localhost:{}'.format(self.port).encode(),
@@ -188,32 +165,24 @@ class ServerClientMixin(object):
         self.assertEqual(cygrpc.CallError.ok, request_call_result)
 
         client_call_tag = object()
-        client_initial_metadata = (
-            (
-                CLIENT_METADATA_ASCII_KEY,
-                CLIENT_METADATA_ASCII_VALUE,
-            ),
-            (
-                CLIENT_METADATA_BIN_KEY,
-                CLIENT_METADATA_BIN_VALUE,
-            ),
-        )
+        client_initial_metadata = ((CLIENT_METADATA_ASCII_KEY,
+                                    CLIENT_METADATA_ASCII_VALUE,
+                                   ), (CLIENT_METADATA_BIN_KEY,
+                                       CLIENT_METADATA_BIN_VALUE,
+                                      ),
+                                  )
         client_call = self.client_channel.integrated_call(
             0, METHOD, self.host_argument, DEADLINE, client_initial_metadata,
-            None, [
-                (
-                    [
-                        cygrpc.SendInitialMetadataOperation(
-                            client_initial_metadata, _EMPTY_FLAGS),
-                        cygrpc.SendMessageOperation(REQUEST, _EMPTY_FLAGS),
-                        cygrpc.SendCloseFromClientOperation(_EMPTY_FLAGS),
-                        cygrpc.ReceiveInitialMetadataOperation(_EMPTY_FLAGS),
-                        cygrpc.ReceiveMessageOperation(_EMPTY_FLAGS),
-                        cygrpc.ReceiveStatusOnClientOperation(_EMPTY_FLAGS),
-                    ],
-                    client_call_tag,
-                ),
-            ])
+            None, [([
+                cygrpc.SendInitialMetadataOperation(client_initial_metadata,
+                                                    _EMPTY_FLAGS),
+                cygrpc.SendMessageOperation(REQUEST, _EMPTY_FLAGS),
+                cygrpc.SendCloseFromClientOperation(_EMPTY_FLAGS),
+                cygrpc.ReceiveInitialMetadataOperation(_EMPTY_FLAGS),
+                cygrpc.ReceiveMessageOperation(_EMPTY_FLAGS),
+                cygrpc.ReceiveStatusOnClientOperation(_EMPTY_FLAGS),
+            ], client_call_tag,
+                   ),])
         client_event_future = test_utilities.SimpleFuture(
             self.client_channel.next_call_event)
 
@@ -233,14 +202,12 @@ class ServerClientMixin(object):
 
         server_call_tag = object()
         server_call = request_event.call
-        server_initial_metadata = ((
-            SERVER_INITIAL_METADATA_KEY,
-            SERVER_INITIAL_METADATA_VALUE,
-        ),)
-        server_trailing_metadata = ((
-            SERVER_TRAILING_METADATA_KEY,
-            SERVER_TRAILING_METADATA_VALUE,
-        ),)
+        server_initial_metadata = ((SERVER_INITIAL_METADATA_KEY,
+                                    SERVER_INITIAL_METADATA_VALUE,
+                                   ),)
+        server_trailing_metadata = ((SERVER_TRAILING_METADATA_KEY,
+                                     SERVER_TRAILING_METADATA_VALUE,
+                                    ),)
         server_start_batch_result = server_call.start_server_batch([
             cygrpc.SendInitialMetadataOperation(server_initial_metadata,
                                                 _EMPTY_FLAGS),
@@ -324,19 +291,13 @@ class ServerClientMixin(object):
                                  server_request_tag)
         client_call = self.client_channel.segregated_call(
             0, METHOD, self.host_argument, DEADLINE, None, None,
-            ([(
-                [
-                    cygrpc.SendInitialMetadataOperation(empty_metadata,
-                                                        _EMPTY_FLAGS),
-                    cygrpc.ReceiveInitialMetadataOperation(_EMPTY_FLAGS),
-                ],
-                object(),
-            ),
-              (
-                  [
-                      cygrpc.ReceiveStatusOnClientOperation(_EMPTY_FLAGS),
-                  ],
-                  object(),
+            ([([
+                cygrpc.SendInitialMetadataOperation(empty_metadata,
+                                                    _EMPTY_FLAGS),
+                cygrpc.ReceiveInitialMetadataOperation(_EMPTY_FLAGS),
+            ], object(),
+              ),
+              ([cygrpc.ReceiveStatusOnClientOperation(_EMPTY_FLAGS),], object(),
               )]))
 
         client_initial_metadata_event_future = test_utilities.SimpleFuture(
@@ -374,9 +335,9 @@ class ServerClientMixin(object):
             server_event_future.result()
 
         # Epilogue
-        client_call.operate([
-            cygrpc.SendCloseFromClientOperation(_EMPTY_FLAGS),
-        ], "Client epilogue")
+        client_call.operate(
+            [cygrpc.SendCloseFromClientOperation(_EMPTY_FLAGS),],
+            "Client epilogue")
         # One for ReceiveStatusOnClient, one for SendCloseFromClient.
         client_events_future = test_utilities.SimpleFuture(lambda: {
             client_call.next_event(),

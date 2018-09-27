@@ -20,16 +20,7 @@ a custom version string for each language's package.
 
 import re
 
-LANGUAGES = [
-    'core',
-    'cpp',
-    'csharp',
-    'node',
-    'objc',
-    'php',
-    'python',
-    'ruby',
-]
+LANGUAGES = ['core', 'cpp', 'csharp', 'node', 'objc', 'php', 'python', 'ruby',]
 
 
 class Version:

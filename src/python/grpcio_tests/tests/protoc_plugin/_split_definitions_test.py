@@ -92,10 +92,7 @@ class _Servicer(object):
 
 def _protoc(proto_path, python_out, grpc_python_out_flag, grpc_python_out,
             absolute_proto_file_names):
-    args = [
-        '',
-        '--proto_path={}'.format(proto_path),
-    ]
+    args = ['', '--proto_path={}'.format(proto_path),]
     if python_out is not None:
         args.append('--python_out={}'.format(python_out))
     if grpc_python_out is not None:
@@ -163,12 +160,9 @@ class _GrpcBeforeProtoProtocStyle(object):
         return pb2_grpc_protoc_exit_code, pb2_protoc_exit_code,
 
 
-_PROTOC_STYLES = (
-    _Mid2016ProtocStyle(),
-    _SingleProtocExecutionProtocStyle(),
-    _ProtoBeforeGrpcProtocStyle(),
-    _GrpcBeforeProtoProtocStyle(),
-)
+_PROTOC_STYLES = (_Mid2016ProtocStyle(), _SingleProtocExecutionProtocStyle(),
+                  _ProtoBeforeGrpcProtocStyle(), _GrpcBeforeProtoProtocStyle(),
+                 )
 
 
 @unittest.skipIf(platform.python_implementation() == 'PyPy',
@@ -184,13 +178,11 @@ class _Test(six.with_metaclass(abc.ABCMeta, unittest.TestCase)):
         os.makedirs(self._python_out)
 
         proto_directories_and_names = {
-            (
-                self.MESSAGES_PROTO_RELATIVE_DIRECTORY_NAMES,
-                self.MESSAGES_PROTO_FILE_NAME,
+            (self.MESSAGES_PROTO_RELATIVE_DIRECTORY_NAMES,
+             self.MESSAGES_PROTO_FILE_NAME,
             ),
-            (
-                self.SERVICES_PROTO_RELATIVE_DIRECTORY_NAMES,
-                self.SERVICES_PROTO_FILE_NAME,
+            (self.SERVICES_PROTO_RELATIVE_DIRECTORY_NAMES,
+             self.SERVICES_PROTO_FILE_NAME,
             ),
         }
         messages_proto_relative_file_name_forward_slashes = '/'.join(
@@ -227,8 +219,7 @@ class _Test(six.with_metaclass(abc.ABCMeta, unittest.TestCase)):
 
         generated_modules = {}
         expected_generated_full_module_names = {
-            self.EXPECTED_MESSAGES_PB2,
-            self.EXPECTED_SERVICES_PB2,
+            self.EXPECTED_MESSAGES_PB2, self.EXPECTED_SERVICES_PB2,
             self.EXPECTED_SERVICES_PB2_GRPC,
         }
         with _system_path([self._python_out]):
@@ -283,8 +274,7 @@ def _create_test_case_class(split_proto, protoc_style):
 
     if split_proto:
         attributes['MESSAGES_PROTO_RELATIVE_DIRECTORY_NAMES'] = (
-            'split_messages',
-            'sub',
+            'split_messages', 'sub',
         )
         attributes['MESSAGES_PROTO_FILE_NAME'] = 'messages.proto'
         attributes['SERVICES_PROTO_RELATIVE_DIRECTORY_NAMES'] = (
@@ -311,10 +301,7 @@ def _create_test_case_class(split_proto, protoc_style):
 
 
 def _create_test_case_classes():
-    for split_proto in (
-            False,
-            True,
-    ):
+    for split_proto in (False, True,):
         for protoc_style in _PROTOC_STYLES:
             yield _create_test_case_class(split_proto, protoc_style)
 

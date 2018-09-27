@@ -33,50 +33,26 @@ _UNARY_STREAM = '/test/UnaryStream'
 _STREAM_UNARY = '/test/StreamUnary'
 _STREAM_STREAM = '/test/StreamStream'
 
-_INVOCATION_METADATA = (
-    (
-        b'invocation-md-key',
-        u'invocation-md-value',
-    ),
-    (
-        u'invocation-md-key-bin',
-        b'\x00\x01',
-    ),
-)
-_EXPECTED_INVOCATION_METADATA = (
-    (
-        'invocation-md-key',
-        'invocation-md-value',
-    ),
-    (
-        'invocation-md-key-bin',
-        b'\x00\x01',
-    ),
-)
+_INVOCATION_METADATA = ((b'invocation-md-key', u'invocation-md-value',
+                        ), (u'invocation-md-key-bin', b'\x00\x01',
+                           ),
+                       )
+_EXPECTED_INVOCATION_METADATA = (('invocation-md-key', 'invocation-md-value',
+                                 ), ('invocation-md-key-bin', b'\x00\x01',
+                                    ),
+                                )
 
 _INITIAL_METADATA = ((b'initial-md-key', u'initial-md-value'),
                      (u'initial-md-key-bin', b'\x00\x02'))
-_EXPECTED_INITIAL_METADATA = (
-    (
-        'initial-md-key',
-        'initial-md-value',
-    ),
-    (
-        'initial-md-key-bin',
-        b'\x00\x02',
-    ),
-)
+_EXPECTED_INITIAL_METADATA = (('initial-md-key', 'initial-md-value',
+                              ), ('initial-md-key-bin', b'\x00\x02',
+                                 ),
+                             )
 
-_TRAILING_METADATA = (
-    (
-        'server-trailing-md-key',
-        'server-trailing-md-value',
-    ),
-    (
-        'server-trailing-md-key-bin',
-        b'\x00\x03',
-    ),
-)
+_TRAILING_METADATA = (('server-trailing-md-key', 'server-trailing-md-value',
+                      ), ('server-trailing-md-key-bin', b'\x00\x03',
+                         ),
+                     )
 _EXPECTED_TRAILING_METADATA = _TRAILING_METADATA
 
 

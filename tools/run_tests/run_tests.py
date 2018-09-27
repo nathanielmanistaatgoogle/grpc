@@ -56,9 +56,7 @@ sys.path.append(gcp_utils_dir)
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), '../..'))
 os.chdir(_ROOT)
 
-_FORCE_ENVIRON_FOR_WRAPPERS = {
-    'GRPC_VERBOSITY': 'DEBUG',
-}
+_FORCE_ENVIRON_FOR_WRAPPERS = {'GRPC_VERBOSITY': 'DEBUG',}
 
 _POLLING_STRATEGIES = {
     'linux': ['epollex', 'epoll1', 'poll', 'poll-cv'],
@@ -204,14 +202,8 @@ def _is_use_docker_child():
 
 
 _PythonConfigVars = collections.namedtuple('_ConfigVars', [
-    'shell',
-    'builder',
-    'builder_prefix_arguments',
-    'venv_relative_python',
-    'toolchain',
-    'runner',
-    'test_name',
-    'iomgr_platform',
+    'shell', 'builder', 'builder_prefix_arguments', 'venv_relative_python',
+    'toolchain', 'runner', 'test_name', 'iomgr_platform',
 ])
 
 
@@ -831,10 +823,7 @@ class PythonLanguage(object):
             if os.name == 'nt':
                 return (python35_config,)
             else:
-                return (
-                    python27_config,
-                    python34_config,
-                )
+                return (python27_config, python34_config,)
         elif args.compiler == 'python2.7':
             return (python27_config,)
         elif args.compiler == 'python3.4':
@@ -850,12 +839,9 @@ class PythonLanguage(object):
         elif args.compiler == 'python_alpine':
             return (python27_config,)
         elif args.compiler == 'all_the_cpythons':
-            return (
-                python27_config,
-                python34_config,
-                python35_config,
-                python36_config,
-            )
+            return (python27_config, python34_config, python35_config,
+                    python36_config,
+                   )
         else:
             raise Exception('Compiler %s not supported.' % args.compiler)
 
@@ -1124,10 +1110,8 @@ class ObjCLanguage(object):
         return []
 
     def build_steps(self):
-        return [
-            ['src/objective-c/tests/build_tests.sh'],
-            ['test/core/iomgr/ios/CFStreamTests/build_tests.sh'],
-        ]
+        return [['src/objective-c/tests/build_tests.sh'],
+                ['test/core/iomgr/ios/CFStreamTests/build_tests.sh'],]
 
     def post_tests_steps(self):
         return []
@@ -1207,11 +1191,7 @@ _LANGUAGES = {
     'sanity': Sanity()
 }
 
-_MSBUILD_CONFIG = {
-    'dbg': 'Debug',
-    'opt': 'Release',
-    'gcov': 'Debug',
-}
+_MSBUILD_CONFIG = {'dbg': 'Debug', 'opt': 'Release', 'gcov': 'Debug',}
 
 
 def _windows_arch_option(arch):

@@ -33,23 +33,22 @@ _DESCRIPTION = 'Test results from master job run on Jenkins'
 _EXPIRATION_MS = 90 * 24 * 60 * 60 * 1000
 _PARTITION_TYPE = 'DAY'
 _PROJECT_ID = 'grpc-testing'
-_RESULTS_SCHEMA = [
-    ('job_name', 'STRING', 'Name of Jenkins job'),
-    ('build_id', 'INTEGER', 'Build ID of Jenkins job'),
-    ('build_url', 'STRING', 'URL of Jenkins job'),
-    ('test_name', 'STRING', 'Individual test name'),
-    ('language', 'STRING', 'Language of test'),
-    ('platform', 'STRING', 'Platform used for test'),
-    ('config', 'STRING', 'Config used for test'),
-    ('compiler', 'STRING', 'Compiler used for test'),
-    ('iomgr_platform', 'STRING', 'Iomgr used for test'),
-    ('result', 'STRING', 'Test result: PASSED, TIMEOUT, FAILED, or SKIPPED'),
-    ('timestamp', 'TIMESTAMP', 'Timestamp of test run'),
-    ('elapsed_time', 'FLOAT', 'How long test took to run'),
-    ('cpu_estimated', 'FLOAT', 'Estimated CPU usage of test'),
-    ('cpu_measured', 'FLOAT', 'Actual CPU usage of test'),
-    ('return_code', 'INTEGER', 'Exit code of test'),
-]
+_RESULTS_SCHEMA = [('job_name', 'STRING', 'Name of Jenkins job'),
+                   ('build_id', 'INTEGER', 'Build ID of Jenkins job'),
+                   ('build_url', 'STRING', 'URL of Jenkins job'),
+                   ('test_name', 'STRING', 'Individual test name'),
+                   ('language', 'STRING', 'Language of test'),
+                   ('platform', 'STRING', 'Platform used for test'),
+                   ('config', 'STRING', 'Config used for test'),
+                   ('compiler', 'STRING', 'Compiler used for test'),
+                   ('iomgr_platform', 'STRING', 'Iomgr used for test'),
+                   ('result', 'STRING',
+                    'Test result: PASSED, TIMEOUT, FAILED, or SKIPPED'),
+                   ('timestamp', 'TIMESTAMP', 'Timestamp of test run'),
+                   ('elapsed_time', 'FLOAT', 'How long test took to run'),
+                   ('cpu_estimated', 'FLOAT', 'Estimated CPU usage of test'),
+                   ('cpu_measured', 'FLOAT', 'Actual CPU usage of test'),
+                   ('return_code', 'INTEGER', 'Exit code of test'),]
 _INTEROP_RESULTS_SCHEMA = [
     ('job_name', 'STRING', 'Name of Jenkins/Kokoro job'),
     ('build_id', 'INTEGER', 'Build ID of Jenkins/Kokoro job'),

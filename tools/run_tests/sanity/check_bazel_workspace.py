@@ -41,31 +41,19 @@ _ZOPEFOUNDATION_ZOPE_INTERFACE_DEP_NAME = 'com_github_zopefoundation_zope_interf
 _TWISTED_CONSTANTLY_DEP_NAME = 'com_github_twisted_constantly'
 
 _GRPC_DEP_NAMES = [
-    'boringssl',
-    'com_github_madler_zlib',
-    'com_google_protobuf',
-    'com_github_google_googletest',
-    'com_github_gflags_gflags',
-    'com_github_nanopb_nanopb',
-    'com_github_google_benchmark',
-    'com_github_cares_cares',
-    'com_google_absl',
-    'io_opencensus_cpp',
-    _BAZEL_TOOLCHAINS_DEP_NAME,
-    _TWISTED_TWISTED_DEP_NAME,
-    _YAML_PYYAML_DEP_NAME,
-    _TWISTED_INCREMENTAL_DEP_NAME,
-    _ZOPEFOUNDATION_ZOPE_INTERFACE_DEP_NAME,
-    _TWISTED_CONSTANTLY_DEP_NAME,
+    'boringssl', 'com_github_madler_zlib', 'com_google_protobuf',
+    'com_github_google_googletest', 'com_github_gflags_gflags',
+    'com_github_nanopb_nanopb', 'com_github_google_benchmark',
+    'com_github_cares_cares', 'com_google_absl', 'io_opencensus_cpp',
+    _BAZEL_TOOLCHAINS_DEP_NAME, _TWISTED_TWISTED_DEP_NAME,
+    _YAML_PYYAML_DEP_NAME, _TWISTED_INCREMENTAL_DEP_NAME,
+    _ZOPEFOUNDATION_ZOPE_INTERFACE_DEP_NAME, _TWISTED_CONSTANTLY_DEP_NAME,
 ]
 
 _GRPC_BAZEL_ONLY_DEPS = [
-    _BAZEL_TOOLCHAINS_DEP_NAME,
-    _TWISTED_TWISTED_DEP_NAME,
-    _YAML_PYYAML_DEP_NAME,
-    _TWISTED_INCREMENTAL_DEP_NAME,
-    _ZOPEFOUNDATION_ZOPE_INTERFACE_DEP_NAME,
-    _TWISTED_CONSTANTLY_DEP_NAME,
+    _BAZEL_TOOLCHAINS_DEP_NAME, _TWISTED_TWISTED_DEP_NAME,
+    _YAML_PYYAML_DEP_NAME, _TWISTED_INCREMENTAL_DEP_NAME,
+    _ZOPEFOUNDATION_ZOPE_INTERFACE_DEP_NAME, _TWISTED_CONSTANTLY_DEP_NAME,
 ]
 
 
@@ -107,9 +95,7 @@ with open(os.path.join('bazel', 'grpc_deps.bzl'), 'r') as f:
 # lines to call them.
 bazel_file += '\ngrpc_deps()\n'
 bazel_file += '\ngrpc_test_only_deps()\n'
-build_rules = {
-    'native': eval_state,
-}
+build_rules = {'native': eval_state,}
 exec bazel_file in build_rules
 for name in _GRPC_DEP_NAMES:
     assert name in names_and_urls.keys()
@@ -146,9 +132,7 @@ for name in _GRPC_DEP_NAMES:
     names_and_urls_with_overridden_name = {}
     state = BazelEvalState(
         names_and_urls_with_overridden_name, overridden_name=name)
-    rules = {
-        'native': state,
-    }
+    rules = {'native': state,}
     exec bazel_file in rules
     assert name not in names_and_urls_with_overridden_name.keys()
 

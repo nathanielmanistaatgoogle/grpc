@@ -199,10 +199,7 @@ class RubyDistribTest(object):
         return []
 
     def build_jobspec(self):
-        arch_to_gem_arch = {
-            'x64': 'x86_64',
-            'x86': 'x86',
-        }
+        arch_to_gem_arch = {'x64': 'x86_64', 'x86': 'x86',}
         if not self.platform == 'linux':
             raise Exception("Not supported yet.")
 

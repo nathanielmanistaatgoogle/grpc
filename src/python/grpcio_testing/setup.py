@@ -24,14 +24,11 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Break import style to ensure that we can find same-directory modules.
 import grpc_version
 
-PACKAGE_DIRECTORIES = {
-    '': '.',
-}
+PACKAGE_DIRECTORIES = {'': '.',}
 
-INSTALL_REQUIRES = (
-    'protobuf>=3.6.0',
-    'grpcio>={version}'.format(version=grpc_version.VERSION),
-)
+INSTALL_REQUIRES = ('protobuf>=3.6.0',
+                    'grpcio>={version}'.format(version=grpc_version.VERSION),
+                   )
 
 setuptools.setup(
     name='grpcio-testing',

@@ -93,20 +93,14 @@ if not args.no_framing:
     flags = 0x04  # END_HEADERS
     if args.set_end_stream:
         flags |= 0x01  # END_STREAM
-    payload_bytes[0].extend([
-        (payload_len >> 16) & 0xff,
-        (payload_len >> 8) & 0xff,
-        (payload_len) & 0xff,
-        # header frame
-        0x01,
-        # flags
-        flags,
-        # stream id
-        0x00,
-        0x00,
-        0x00,
-        0x01
-    ])
+    payload_bytes[0].extend([(payload_len >> 16) & 0xff,
+                             (payload_len >> 8) & 0xff, (payload_len) & 0xff,
+                             # header frame
+                             0x01,
+                             # flags
+                             flags,
+                             # stream id
+                             0x00, 0x00, 0x00, 0x01])
 
 hex_bytes = [ord(c) for c in "abcdefABCDEF0123456789"]
 

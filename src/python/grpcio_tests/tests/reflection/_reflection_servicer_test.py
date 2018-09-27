@@ -33,13 +33,7 @@ _EMPTY_PROTO_SYMBOL_NAME = 'grpc.testing.Empty'
 _SERVICE_NAMES = ('Angstrom', 'Bohr', 'Curie', 'Dyson', 'Einstein', 'Feynman',
                   'Galilei')
 _EMPTY_EXTENSIONS_SYMBOL_NAME = 'grpc.testing.proto2.EmptyWithExtensions'
-_EMPTY_EXTENSIONS_NUMBERS = (
-    124,
-    125,
-    126,
-    127,
-    128,
-)
+_EMPTY_EXTENSIONS_NUMBERS = (124, 125, 126, 127, 128,)
 
 
 def _file_descriptor_to_proto(descriptor):
@@ -60,12 +54,11 @@ class ReflectionServicerTest(unittest.TestCase):
         self._stub = reflection_pb2_grpc.ServerReflectionStub(channel)
 
     def testFileByName(self):
-        requests = (
-            reflection_pb2.ServerReflectionRequest(
-                file_by_filename=_EMPTY_PROTO_FILE_NAME),
-            reflection_pb2.ServerReflectionRequest(
-                file_by_filename='i-donut-exist'),
-        )
+        requests = (reflection_pb2.ServerReflectionRequest(
+            file_by_filename=_EMPTY_PROTO_FILE_NAME),
+                    reflection_pb2.ServerReflectionRequest(
+                        file_by_filename='i-donut-exist'),
+                   )
         responses = tuple(self._stub.ServerReflectionInfo(iter(requests)))
         expected_responses = (
             reflection_pb2.ServerReflectionResponse(

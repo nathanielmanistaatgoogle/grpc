@@ -62,10 +62,7 @@ class _Handler(object):
     def handle_unary_unary(self, request, servicer_context):
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         return request
 
     def handle_unary_stream(self, request, servicer_context):
@@ -74,10 +71,7 @@ class _Handler(object):
             yield request
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
 
     def handle_stream_unary(self, request_iterator, servicer_context):
         if servicer_context is not None:
@@ -89,19 +83,13 @@ class _Handler(object):
             response_elements.append(request)
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         return b''.join(response_elements)
 
     def handle_stream_stream(self, request_iterator, servicer_context):
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         for request in request_iterator:
             self._control.control()
             yield request

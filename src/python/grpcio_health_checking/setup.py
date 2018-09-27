@@ -42,8 +42,7 @@ class _NoOpCommand(setuptools.Command):
 
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
+    'Programming Language :: Python', 'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.4',
@@ -52,14 +51,11 @@ CLASSIFIERS = [
     'License :: OSI Approved :: Apache Software License',
 ]
 
-PACKAGE_DIRECTORIES = {
-    '': '.',
-}
+PACKAGE_DIRECTORIES = {'': '.',}
 
-INSTALL_REQUIRES = (
-    'protobuf>=3.6.0',
-    'grpcio>={version}'.format(version=grpc_version.VERSION),
-)
+INSTALL_REQUIRES = ('protobuf>=3.6.0',
+                    'grpcio>={version}'.format(version=grpc_version.VERSION),
+                   )
 
 try:
     import health_commands as _health_commands

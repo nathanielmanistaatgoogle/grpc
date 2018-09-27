@@ -37,10 +37,7 @@ _PRIVATE_KEY = resources.private_key()
 _CERTIFICATE_CHAIN = resources.certificate_chain()
 _TEST_ROOT_CERTIFICATES = resources.test_root_certificates()
 _SERVER_CERTS = ((_PRIVATE_KEY, _CERTIFICATE_CHAIN),)
-_PROPERTY_OPTIONS = ((
-    'grpc.ssl_target_name_override',
-    _SERVER_HOST_OVERRIDE,
-),)
+_PROPERTY_OPTIONS = (('grpc.ssl_target_name_override', _SERVER_HOST_OVERRIDE,),)
 
 
 def handle_unary_unary(request, servicer_context):

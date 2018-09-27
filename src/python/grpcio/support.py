@@ -38,9 +38,7 @@ Could not find <Python.h>. This could mean the following:
     (check your environment variables or try re-installing?)
 """
 
-C_CHECKS = {
-    C_PYTHON_DEV: C_PYTHON_DEV_ERROR_MESSAGE,
-}
+C_CHECKS = {C_PYTHON_DEV: C_PYTHON_DEV_ERROR_MESSAGE,}
 
 
 def _compile(compiler, source_string):

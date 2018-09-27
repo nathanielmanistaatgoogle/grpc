@@ -190,10 +190,11 @@ def check_and_update_cythonization(extensions):
         for source in extension.sources:
             base, file_ext = os.path.splitext(source)
             if file_ext == '.pyx':
-                generated_pyx_source = next((base + gen_ext for gen_ext in (
-                    '.c',
-                    '.cpp',
-                ) if os.path.isfile(base + gen_ext)), None)
+                generated_pyx_source = next((base + gen_ext
+                                             for gen_ext in ('.c', '.cpp',
+                                                            )
+                                             if os.path.isfile(base + gen_ext)),
+                                            None)
                 if generated_pyx_source:
                     generated_pyx_sources.append(generated_pyx_source)
                 else:
@@ -244,10 +245,7 @@ def try_cythonize(extensions, linetracing=False, mandatory=True):
 class BuildExt(build_ext.build_ext):
     """Custom build_ext command to enable compiler-specific flags."""
 
-    C_OPTIONS = {
-        'unix': ('-pthread',),
-        'msvc': (),
-    }
+    C_OPTIONS = {'unix': ('-pthread',), 'msvc': (),}
     LINK_OPTIONS = {}
 
     def build_extensions(self):

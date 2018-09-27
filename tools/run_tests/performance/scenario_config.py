@@ -31,10 +31,7 @@ SECURE_SECARGS = {
     'server_host_override': 'foo.test.google.fr'
 }
 
-HISTOGRAM_PARAMS = {
-    'resolution': 0.01,
-    'max_possible': 60e9,
-}
+HISTOGRAM_PARAMS = {'resolution': 0.01, 'max_possible': 60e9,}
 
 # target number of RPCs outstanding on across all client channels in
 # non-ping-pong tests (since we can only specify per-channel numbers, the
@@ -71,10 +68,7 @@ def geometric_progression(start, stop, step):
 
 def _payload_type(use_generic_payload, req_size, resp_size):
     r = {}
-    sizes = {
-        'req_size': req_size,
-        'resp_size': resp_size,
-    }
+    sizes = {'req_size': req_size, 'resp_size': resp_size,}
     if use_generic_payload:
         r['bytebuf_params'] = sizes
     else:

@@ -25,10 +25,9 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class _AuthMetadataContext(
-        collections.namedtuple('AuthMetadataContext', (
-            'service_url',
-            'method_name',
-        )), grpc.AuthMetadataContext):
+        collections.namedtuple('AuthMetadataContext',
+                               ('service_url', 'method_name',
+                               )), grpc.AuthMetadataContext):
     pass
 
 

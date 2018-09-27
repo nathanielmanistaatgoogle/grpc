@@ -35,29 +35,16 @@ from tests.unit.framework.common import test_constants
 _RELATIVE_PROTO_PATH = 'relative_proto_path'
 _RELATIVE_PYTHON_OUT = 'relative_python_out'
 
-_PROTO_FILES_PATH_COMPONENTS = (
-    (
-        'beta_grpc_plugin_test',
-        'payload',
-        'test_payload.proto',
-    ),
-    (
-        'beta_grpc_plugin_test',
-        'requests',
-        'r',
-        'test_requests.proto',
-    ),
-    (
-        'beta_grpc_plugin_test',
-        'responses',
-        'test_responses.proto',
-    ),
-    (
-        'beta_grpc_plugin_test',
-        'service',
-        'test_service.proto',
-    ),
-)
+_PROTO_FILES_PATH_COMPONENTS = (('beta_grpc_plugin_test', 'payload',
+                                 'test_payload.proto',
+                                ), ('beta_grpc_plugin_test', 'requests', 'r',
+                                    'test_requests.proto',
+                                   ), ('beta_grpc_plugin_test', 'responses',
+                                       'test_responses.proto',
+                                      ), ('beta_grpc_plugin_test', 'service',
+                                          'test_service.proto',
+                                         ),
+                               )
 
 _PAYLOAD_PB2 = 'beta_grpc_plugin_test.payload.test_payload_pb2'
 _REQUESTS_PB2 = 'beta_grpc_plugin_test.requests.r.test_requests_pb2'
@@ -319,9 +306,8 @@ class PythonPluginTest(unittest.TestCase):
 
     def _protoc(self):
         args = [
-            '',
-            '--proto_path={}'.format(self._proto_path),
-            '--python_out={}'.format(self._python_out),
+            '', '--proto_path={}'.format(
+                self._proto_path), '--python_out={}'.format(self._python_out),
             '--grpc_python_out=grpc_1_0:{}'.format(self._python_out),
         ] + list(self._proto_file_names)
         protoc_exit_code = protoc.main(args)

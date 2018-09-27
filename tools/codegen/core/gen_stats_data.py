@@ -44,10 +44,7 @@ def c_str(s, encoding='ascii'):
     return '"' + result + '"'
 
 
-types = (
-    make_type('Counter', []),
-    make_type('Histogram', ['max', 'buckets']),
-)
+types = (make_type('Counter', []), make_type('Histogram', ['max', 'buckets']),)
 
 inst_map = dict((t[0].__name__, t[1]) for t in types)
 

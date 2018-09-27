@@ -273,18 +273,8 @@ def _connectivity_watch(channel, args):
 
 def _ping_pong_with_child_processes_after_first_response(
         channel, args, child_target, run_after_close=True):
-    request_response_sizes = (
-        31415,
-        9,
-        2653,
-        58979,
-    )
-    request_payload_sizes = (
-        27182,
-        8,
-        1828,
-        45904,
-    )
+    request_response_sizes = (31415, 9, 2653, 58979,)
+    request_payload_sizes = (27182, 8, 1828, 45904,)
     stub = test_pb2_grpc.TestServiceStub(channel)
     pipe = _Pipe()
     parent_bidi_call = stub.FullDuplexCall(pipe)

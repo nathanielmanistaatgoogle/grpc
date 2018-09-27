@@ -231,8 +231,7 @@ FORMAT = [
     ('TAG', lambda line: '..' * line.indent + tidy_tag(line.tag)),
     ('LOC',
      lambda line: '%s:%d' % (line.filename[line.filename.rfind('/') + 1:], line.fileline)
-    ),
-    ('IMP', lambda line: '*' if line.important else ''),
+    ), ('IMP', lambda line: '*' if line.important else ''),
     ('FROM_IMP', time_format(TIME_FROM_LAST_IMPORTANT)),
     ('FROM_STACK_START', time_format(TIME_FROM_STACK_START)),
     ('SELF', time_format(SELF_TIME)),
@@ -256,9 +255,7 @@ accounted_for = 0
 for cs in call_stacks:
     print >> out, '\n'
     if args.fmt in BANNER:
-        print >> out, BANNER[args.fmt] % {
-            'count': cs.count,
-        }
+        print >> out, BANNER[args.fmt] % {'count': cs.count,}
     header, _ = zip(*FORMAT)
     table = []
     for line in cs.lines:

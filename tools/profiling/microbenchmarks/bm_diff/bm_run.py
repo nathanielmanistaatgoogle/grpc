@@ -90,9 +90,8 @@ def _collect_bm_data(bm, cfg, name, regex, idx, loops):
         cmd = [
             'bm_diff_%s/%s/%s' % (name, cfg, bm),
             '--benchmark_filter=^%s$' % line,
-            '--benchmark_out=%s.%s.%s.%s.%d.json' % (bm, stripped_line, cfg,
-                                                     name, idx),
-            '--benchmark_out_format=json',
+            '--benchmark_out=%s.%s.%s.%s.%d.json' %
+            (bm, stripped_line, cfg, name, idx), '--benchmark_out_format=json',
         ]
         jobs_list.append(
             jobset.JobSpec(

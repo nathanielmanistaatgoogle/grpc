@@ -69,13 +69,12 @@ SERVER_CERT_CHAIN_2_PEM = (resources.cert_hier_2_server_1_cert() +
 Call = collections.namedtuple('Call', ['did_raise', 'returned_cert_config'])
 
 
-def _create_client_stub(
-        port,
-        expect_success,
-        root_certificates=None,
-        private_key=None,
-        certificate_chain=None,
-):
+def _create_client_stub(port,
+                        expect_success,
+                        root_certificates=None,
+                        private_key=None,
+                        certificate_chain=None,
+                       ):
     channel = grpc.secure_channel(
         'localhost:{}'.format(port),
         grpc.ssl_channel_credentials(

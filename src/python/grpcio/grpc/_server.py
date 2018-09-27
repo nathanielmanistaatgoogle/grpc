@@ -80,10 +80,9 @@ def _details(state):
 
 
 class _HandlerCallDetails(
-        collections.namedtuple('_HandlerCallDetails', (
-            'method',
-            'invocation_metadata',
-        )), grpc.HandlerCallDetails):
+        collections.namedtuple('_HandlerCallDetails',
+                               ('method', 'invocation_metadata',
+                               )), grpc.HandlerCallDetails):
     pass
 
 
@@ -135,12 +134,12 @@ def _abort(state, call, code, details):
         effective_code = _abortion_code(state, code)
         effective_details = details if state.details is None else state.details
         if state.initial_metadata_allowed:
-            operations = (
-                cygrpc.SendInitialMetadataOperation(None, _EMPTY_FLAGS),
-                cygrpc.SendStatusFromServerOperation(
-                    state.trailing_metadata, effective_code, effective_details,
-                    _EMPTY_FLAGS),
-            )
+            operations = (cygrpc.SendInitialMetadataOperation(
+                None, _EMPTY_FLAGS),
+                          cygrpc.SendStatusFromServerOperation(
+                              state.trailing_metadata, effective_code,
+                              effective_details, _EMPTY_FLAGS),
+                         )
             token = _SEND_INITIAL_METADATA_AND_SEND_STATUS_FROM_SERVER_TOKEN
         else:
             operations = (cygrpc.SendStatusFromServerOperation(
@@ -435,11 +434,11 @@ def _send_response(rpc_event, state, serialized_response):
             return False
         else:
             if state.initial_metadata_allowed:
-                operations = (
-                    cygrpc.SendInitialMetadataOperation(None, _EMPTY_FLAGS),
-                    cygrpc.SendMessageOperation(serialized_response,
-                                                _EMPTY_FLAGS),
-                )
+                operations = (cygrpc.SendInitialMetadataOperation(
+                    None, _EMPTY_FLAGS),
+                              cygrpc.SendMessageOperation(
+                                  serialized_response, _EMPTY_FLAGS),
+                             )
                 state.initial_metadata_allowed = False
                 token = _SEND_INITIAL_METADATA_AND_SEND_MESSAGE_TOKEN
             else:
@@ -576,12 +575,11 @@ def _find_method_handler(rpc_event, generic_handlers, interceptor_pipeline):
 
 
 def _reject_rpc(rpc_event, status, details):
-    operations = (
-        cygrpc.SendInitialMetadataOperation(None, _EMPTY_FLAGS),
-        cygrpc.ReceiveCloseOnServerOperation(_EMPTY_FLAGS),
-        cygrpc.SendStatusFromServerOperation(None, status, details,
-                                             _EMPTY_FLAGS),
-    )
+    operations = (cygrpc.SendInitialMetadataOperation(None, _EMPTY_FLAGS),
+                  cygrpc.ReceiveCloseOnServerOperation(_EMPTY_FLAGS),
+                  cygrpc.SendStatusFromServerOperation(None, status, details,
+                                                       _EMPTY_FLAGS),
+                 )
     rpc_state = _RPCState()
     rpc_event.call.start_server_batch(operations,
                                       lambda ignored_event: (rpc_state, (),))

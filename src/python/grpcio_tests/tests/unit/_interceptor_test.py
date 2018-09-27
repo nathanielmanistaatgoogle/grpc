@@ -65,10 +65,7 @@ class _Handler(object):
     def handle_unary_unary(self, request, servicer_context):
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         return request
 
     def handle_unary_stream(self, request, servicer_context):
@@ -77,10 +74,7 @@ class _Handler(object):
             yield request
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
 
     def handle_stream_unary(self, request_iterator, servicer_context):
         if servicer_context is not None:
@@ -92,19 +86,13 @@ class _Handler(object):
             response_elements.append(request)
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         return b''.join(response_elements)
 
     def handle_stream_stream(self, request_iterator, servicer_context):
         self._control.control()
         if servicer_context is not None:
-            servicer_context.set_trailing_metadata(((
-                'testkey',
-                'testvalue',
-            ),))
+            servicer_context.set_trailing_metadata((('testkey', 'testvalue',),))
         for request in request_iterator:
             self._control.control()
             yield request
@@ -275,10 +263,7 @@ def _append_request_header_interceptor(header, value):
         metadata = []
         if client_call_details.metadata:
             metadata = list(client_call_details.metadata)
-        metadata.append((
-            header,
-            value,
-        ))
+        metadata.append((header, value,))
         client_call_details = _ClientCallDetails(
             client_call_details.method, client_call_details.timeout, metadata,
             client_call_details.credentials)
@@ -322,11 +307,10 @@ class InterceptorTest(unittest.TestCase):
         self._server = grpc.server(
             self._server_pool,
             options=(('grpc.so_reuseport', 0),),
-            interceptors=(
-                _LoggingInterceptor('s1', self._record),
-                conditional_interceptor,
-                _LoggingInterceptor('s2', self._record),
-            ))
+            interceptors=(_LoggingInterceptor('s1', self._record),
+                          conditional_interceptor,
+                          _LoggingInterceptor('s2', self._record),
+                         ))
         port = self._server.add_insecure_port('[::]:0')
         self._server.add_generic_rpc_handlers((_GenericHandler(self._handler),))
         self._server.start()

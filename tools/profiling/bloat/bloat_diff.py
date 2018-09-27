@@ -39,10 +39,7 @@ argp.add_argument('-j', '--jobs', type=int, default=multiprocessing.cpu_count())
 
 args = argp.parse_args()
 
-LIBS = [
-    'libgrpc.so',
-    'libgrpc++.so',
-]
+LIBS = ['libgrpc.so', 'libgrpc++.so',]
 
 
 def build(where):

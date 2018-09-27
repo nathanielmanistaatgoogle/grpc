@@ -20,10 +20,10 @@ import six
 
 
 def _fuss(tuplified_metadata):
-    return tuplified_metadata + ((
-        'grpc.metadata_added_by_runtime',
-        'gRPC is allowed to add metadata in transmission and does so.',
-    ),)
+    return tuplified_metadata + (
+        ('grpc.metadata_added_by_runtime',
+         'gRPC is allowed to add metadata in transmission and does so.',
+        ),)
 
 
 FUSSED_EMPTY_METADATA = _fuss(())
@@ -47,12 +47,10 @@ def rpc_names(service_descriptors):
 
 
 class ChannelRpcRead(
-        collections.namedtuple('ChannelRpcRead', (
-            'response',
-            'trailing_metadata',
-            'code',
-            'details',
-        ))):
+        collections.namedtuple(
+            'ChannelRpcRead',
+            ('response', 'trailing_metadata', 'code', 'details',
+            ))):
     pass
 
 
@@ -104,11 +102,9 @@ class ChannelHandler(six.with_metaclass(abc.ABCMeta)):
 
 
 class ServerRpcRead(
-        collections.namedtuple('ServerRpcRead', (
-            'request',
-            'requests_closed',
-            'terminated',
-        ))):
+        collections.namedtuple('ServerRpcRead',
+                               ('request', 'requests_closed', 'terminated',
+                               ))):
     pass
 
 

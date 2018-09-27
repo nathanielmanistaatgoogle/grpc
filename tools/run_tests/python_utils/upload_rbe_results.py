@@ -32,16 +32,14 @@ _DESCRIPTION = 'Test results from master RBE builds on Kokoro'
 _EXPIRATION_MS = 90 * 24 * 60 * 60 * 1000
 _PARTITION_TYPE = 'DAY'
 _PROJECT_ID = 'grpc-testing'
-_RESULTS_SCHEMA = [
-    ('job_name', 'STRING', 'Name of Kokoro job'),
-    ('build_id', 'INTEGER', 'Build ID of Kokoro job'),
-    ('build_url', 'STRING', 'URL of Kokoro build'),
-    ('test_target', 'STRING', 'Bazel target path'),
-    ('test_case', 'STRING', 'Name of test case'),
-    ('result', 'STRING', 'Test or build result'),
-    ('timestamp', 'TIMESTAMP', 'Timestamp of test run'),
-    ('duration', 'FLOAT', 'Duration of the test run'),
-]
+_RESULTS_SCHEMA = [('job_name', 'STRING', 'Name of Kokoro job'),
+                   ('build_id', 'INTEGER', 'Build ID of Kokoro job'),
+                   ('build_url', 'STRING', 'URL of Kokoro build'),
+                   ('test_target', 'STRING', 'Bazel target path'),
+                   ('test_case', 'STRING', 'Name of test case'),
+                   ('result', 'STRING', 'Test or build result'),
+                   ('timestamp', 'TIMESTAMP', 'Timestamp of test run'),
+                   ('duration', 'FLOAT', 'Duration of the test run'),]
 _TABLE_ID = 'rbe_test_results'
 
 

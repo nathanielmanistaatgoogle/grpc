@@ -39,8 +39,7 @@ import grpc_version
 
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
+    'Programming Language :: Python', 'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.4',
@@ -166,10 +165,8 @@ def extension_modules():
         name='grpc_tools._protoc_compiler',
         sources=plugin_sources,
         include_dirs=[
-            '.',
-            'grpc_root',
-            os.path.join('grpc_root', 'include'),
-            CC_INCLUDE,
+            '.', 'grpc_root',
+            os.path.join('grpc_root', 'include'), CC_INCLUDE,
         ],
         language='c++',
         define_macros=list(DEFINE_MACROS),

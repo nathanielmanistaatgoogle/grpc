@@ -30,10 +30,8 @@ class ServerTest(unittest.TestCase):
         with self.assertRaises(AttributeError) as exception_context:
             grpc.server(
                 futures.ThreadPoolExecutor(max_workers=5),
-                handlers=[
-                    _ActualGenericRpcHandler(),
-                    object(),
-                ])
+                handlers=[_ActualGenericRpcHandler(),
+                          object(),])
         self.assertIn('grpc.GenericRpcHandler',
                       str(exception_context.exception))
 

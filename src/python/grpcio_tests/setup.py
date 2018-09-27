@@ -32,9 +32,7 @@ import grpc_version
 
 LICENSE = 'Apache License 2.0'
 
-PACKAGE_DIRECTORIES = {
-    '': '.',
-}
+PACKAGE_DIRECTORIES = {'': '.',}
 
 INSTALL_REQUIRES = ('coverage>=4.0', 'enum34>=1.0.4',
                     'grpcio>={version}'.format(version=grpc_version.VERSION),
@@ -61,26 +59,19 @@ COMMAND_CLASS = {
 
 PACKAGE_DATA = {
     'tests.interop': [
-        'credentials/ca.pem',
-        'credentials/server1.key',
+        'credentials/ca.pem', 'credentials/server1.key',
         'credentials/server1.pem',
     ],
-    'tests.protoc_plugin.protos.invocation_testing': [
-        'same.proto',
-    ],
+    'tests.protoc_plugin.protos.invocation_testing': ['same.proto',],
     'tests.protoc_plugin.protos.invocation_testing.split_messages': [
         'messages.proto',
     ],
     'tests.protoc_plugin.protos.invocation_testing.split_services': [
         'services.proto',
     ],
-    'tests.testing.proto': [
-        'requests.proto',
-        'services.proto',
-    ],
+    'tests.testing.proto': ['requests.proto', 'services.proto',],
     'tests.unit': [
-        'credentials/ca.pem',
-        'credentials/server1.key',
+        'credentials/ca.pem', 'credentials/server1.key',
         'credentials/server1.pem',
     ],
     'tests': ['tests.json'],

@@ -24,11 +24,7 @@ sys.path.append(
         os.path.dirname(sys.argv[0]), '..', 'run_tests', 'python_utils'))
 import jobset
 
-extra_args = [
-    '-x',
-    'c++',
-    '-std=c++11',
-]
+extra_args = ['-x', 'c++', '-std=c++11',]
 with open('.clang_complete') as f:
     for line in f:
         line = line.strip()
@@ -49,19 +45,15 @@ argp.add_argument(
 argp.set_defaults(fix=False)
 args = argp.parse_args()
 
-cmdline = [
-    clang_tidy,
-] + ['--extra-arg-before=%s' % arg for arg in extra_args]
+cmdline = [clang_tidy,] + ['--extra-arg-before=%s' % arg for arg in extra_args]
 
 if args.fix:
     cmdline.append('--fix')
 
 jobs = []
 for filename in args.files:
-    jobs.append(jobset.JobSpec(
-        cmdline + [filename],
-        shortname=filename,
-    ))  #verbose_success=True))
+    jobs.append(jobset.JobSpec(cmdline + [filename], shortname=filename,
+                              ))  #verbose_success=True))
 
 num_fails, res_set = jobset.run(jobs, maxjobs=args.jobs)
 sys.exit(num_fails)
